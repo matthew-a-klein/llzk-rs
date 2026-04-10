@@ -7,8 +7,7 @@
 //!
 //! Run with: `cargo run --package llzk --example division`
 
-use std::error::Error as StdError;
-use std::result::Result as StdResult;
+use std::{error::Error as StdError, result::Result as StdResult};
 
 // Commonly used types are re-exported in the prelude.
 use llzk::{builder::OpBuilder, prelude::*};
@@ -36,7 +35,7 @@ fn main() -> Result<()> {
 
     // Operations can be created with factory methods with the same name as the op they create,
     // mimicking its mnemonic (struct.def in this case).
-    let main_st = dialect::r#struct::def(location, MAIN_STRUCT_NAME, &[], [])?;
+    let main_st = dialect::r#struct::def(location, MAIN_STRUCT_NAME, [])?;
 
     // The inputs of the main struct must be of type !felt.type (or array thereof).
     let felt_type = FeltType::new(&context);

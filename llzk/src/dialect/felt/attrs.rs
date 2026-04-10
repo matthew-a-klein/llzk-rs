@@ -7,7 +7,7 @@ use llzk_sys::{
 };
 use melior::{
     Context, StringRef,
-    ir::{Attribute, AttributeLike, Identifier},
+    ir::{Attribute, AttributeLike, TypeLike},
 };
 use mlir_sys::MlirAttribute;
 
@@ -37,7 +37,7 @@ impl<'c> FeltConstAttribute<'c> {
                 Self::from_raw(llzkFelt_FeltConstAttrGet(
                     ctx.to_raw(),
                     value as i64,
-                    Identifier::new(ctx, field).to_raw(),
+                    FeltType::with_field(ctx, field).to_raw(),
                 ))
             },
             None => unsafe {
@@ -49,7 +49,8 @@ impl<'c> FeltConstAttribute<'c> {
         }
     }
 
-    /// Creates a [`FeltConstAttribute`] from a 64 bit value and a set bit width and optional field specification.
+    /// Creates a [`FeltConstAttribute`] from a 64 bit value and a set bit width and optional field
+    /// specification.
     pub fn new_with_bitlen(ctx: &'c Context, bitlen: u32, value: u64, field: Option<&str>) -> Self {
         match field {
             Some(field) => unsafe {
@@ -57,7 +58,7 @@ impl<'c> FeltConstAttribute<'c> {
                     ctx.to_raw(),
                     bitlen,
                     value as i64,
-                    Identifier::new(ctx, field).to_raw(),
+                    FeltType::with_field(ctx, field).to_raw(),
                 ))
             },
             None => unsafe {
@@ -79,7 +80,7 @@ impl<'c> FeltConstAttribute<'c> {
                     ctx.to_raw(),
                     bitlen,
                     value.to_raw(),
-                    Identifier::new(ctx, field).to_raw(),
+                    FeltType::with_field(ctx, field).to_raw(),
                 ))
             },
             None => unsafe {
@@ -109,7 +110,7 @@ impl<'c> FeltConstAttribute<'c> {
                     bitlen,
                     parts.as_ptr(),
                     parts.len() as isize,
-                    Identifier::new(ctx, field).to_raw(),
+                    FeltType::with_field(ctx, field).to_raw(),
                 ))
             },
             None => unsafe {

@@ -1,5 +1,7 @@
-use llzk::builder::{OpBuilder, OpBuilderLike};
-use llzk::prelude::*;
+use llzk::{
+    builder::{OpBuilder, OpBuilderLike},
+    prelude::*,
+};
 use melior::ir::{Location, r#type::FunctionType};
 
 mod common;
@@ -83,7 +85,7 @@ fn function_call() {
 fn make_empty_struct<'c>(context: &'c LlzkContext, name: &str) -> StructDefOp<'c> {
     let loc = Location::unknown(&context);
     let typ = StructType::from_str(&context, name);
-    dialect::r#struct::def(loc, name, &[], {
+    dialect::r#struct::def(loc, name, {
         [
             dialect::r#struct::helpers::compute_fn(loc, typ, &[], None).map(Into::into),
             dialect::r#struct::helpers::constrain_fn(loc, typ, &[], None).map(Into::into),
@@ -188,6 +190,6 @@ fn call_op_self_value_of_compute() {
     similar_asserts::assert_eq!(
         format!("{}", self_val.unwrap()),
         // Yes, the line does have a trailing space, here and in the entire IR above.
-        "%0 = function.call @StructA::@compute() : () -> !struct.type<@StructA<[]>> "
+        "%0 = function.call @StructA::@compute() : () -> !struct.type<@StructA> "
     );
 }
